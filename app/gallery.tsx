@@ -1,18 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Avatar from "boring-avatars";
-import {
-  FaRegCircleXmark,
-  FaLocationDot,
-  FaPhone,
-  FaEnvelope,
-} from "react-icons/fa6";
+import { useEffect, useState } from 'react';
+import Avatar from 'boring-avatars';
+import { FaRegCircleXmark, FaLocationDot, FaPhone, FaEnvelope } from 'react-icons/fa6';
 
-import Controls from "./controls";
-import Modal from "./modal";
+import Controls from './controls';
+import Modal from './modal';
 
-import { User } from "./types/user";
+import { User } from './types/user';
+import { SortValue } from './types/sort';
+import { sortArray } from './helpers';
 
 export type GalleryProps = {
   users: User[];
@@ -21,6 +18,8 @@ const Gallery = ({ users }: GalleryProps) => {
   const [usersList, setUsersList] = useState(users);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [sortValue, setSortValue] = useState<SortValue>({});
 
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
@@ -36,11 +35,26 @@ const Gallery = ({ users }: GalleryProps) => {
     setIsModalOpen(false);
   };
 
+  const handleSortValues = (newSortValue: SortValue) => {
+    setSortValue(newSortValue);
+  };
+
+  useEffect(() => {
+    if (sortValue.sortKey) {
+      const newSortedArray = sortArray(users, sortValue.sortKey, sortValue.direction);
+
+      setUsersList([...newSortedArray]);
+    }
+  }, [sortValue, users]);
+
   return (
     <div className="user-gallery">
       <div className="heading">
         <h1 className="title">Users</h1>
-        <Controls />
+        <Controls
+          sortValue={sortValue}
+          handleSortValues={handleSortValues}
+        />
       </div>
       <div className="items">
         {usersList.map((user, index) => (
@@ -54,7 +68,7 @@ const Gallery = ({ users }: GalleryProps) => {
                 size={96}
                 name={user.name}
                 variant="marble"
-                colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+                colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
               />
             </div>
             <div className="info">
@@ -63,7 +77,10 @@ const Gallery = ({ users }: GalleryProps) => {
             </div>
           </div>
         ))}
-        <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        >
           <div className="user-panel">
             <div className="header">
               <div
@@ -83,13 +100,7 @@ const Gallery = ({ users }: GalleryProps) => {
                       size={240}
                       name={selectedUser.name}
                       variant="marble"
-                      colors={[
-                        "#92A1C6",
-                        "#146A7C",
-                        "#F0AB3D",
-                        "#C271B4",
-                        "#C20D90",
-                      ]}
+                      colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
                     />
                   </div>
                   <div className="name">
@@ -109,9 +120,7 @@ const Gallery = ({ users }: GalleryProps) => {
                   </div>
                   <div className="company">
                     <div className="name">{selectedUser.company.name}</div>
-                    <div className="catchphrase">
-                      {selectedUser.company.catchPhrase}
-                    </div>
+                    <div className="catchphrase">{selectedUser.company.catchPhrase}</div>
                   </div>
                 </div>
               )}
