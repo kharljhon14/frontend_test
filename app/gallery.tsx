@@ -1,17 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Avatar from "boring-avatars";
-import {
-  FaRegCircleXmark,
-  FaLocationDot,
-  FaPhone,
-  FaEnvelope,
-} from "react-icons/fa6";
+import { useState } from 'react';
+import Avatar from 'boring-avatars';
+import { FaRegCircleXmark, FaLocationDot, FaPhone, FaEnvelope } from 'react-icons/fa6';
 
-import Modal from "./modal";
+import Modal from './modal';
 
-import { User } from "./types/user";
+import { User } from './types/user';
 
 export type GalleryProps = {
   users: User[];
@@ -24,7 +19,7 @@ const Gallery = ({ users }: GalleryProps) => {
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
 
-    if(user) {
+    if (user) {
       setSelectedUser(user);
       setIsModalOpen(true);
     }
@@ -50,7 +45,7 @@ const Gallery = ({ users }: GalleryProps) => {
                 size={96}
                 name={user.name}
                 variant="marble"
-                colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+                colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
               />
             </div>
             <div className="info">
@@ -59,7 +54,10 @@ const Gallery = ({ users }: GalleryProps) => {
             </div>
           </div>
         ))}
-        <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        >
           <div className="user-panel">
             <div className="header">
               <div
@@ -79,13 +77,7 @@ const Gallery = ({ users }: GalleryProps) => {
                       size={240}
                       name={selectedUser.name}
                       variant="marble"
-                      colors={[
-                        "#92A1C6",
-                        "#146A7C",
-                        "#F0AB3D",
-                        "#C271B4",
-                        "#C20D90",
-                      ]}
+                      colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
                     />
                   </div>
                   <div className="name">
@@ -105,9 +97,7 @@ const Gallery = ({ users }: GalleryProps) => {
                   </div>
                   <div className="company">
                     <div className="name">{selectedUser.company.name}</div>
-                    <div className="catchphrase">
-                      {selectedUser.company.catchPhrase}
-                    </div>
+                    <div className="catchphrase">{selectedUser.company.catchPhrase}</div>
                   </div>
                 </div>
               )}
